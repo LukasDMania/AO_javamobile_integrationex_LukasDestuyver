@@ -2,12 +2,22 @@ package com.examenopdracht.electroman.data.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(foreignKeys = @ForeignKey(
+        entity = User.class,
+        parentColumns = "id",
+        childColumns = "userId",
+        onDelete = ForeignKey.CASCADE
+))
 public class WorkOrder {
     @PrimaryKey(autoGenerate = true)
     private Long id;
+
+    // Foreign key
+    private Long userId;
+
     private String city;
     private String device;
     private String problemCode;
@@ -19,8 +29,9 @@ public class WorkOrder {
     // Constructors
     public WorkOrder() {
     }
-    public WorkOrder(Long id, String city, String device, String problemCode, String customerName, boolean processed, String detailedProblemDescription, String repairInformation) {
+    public WorkOrder(Long id, Long userId, String city, String device, String problemCode, String customerName, boolean processed, String detailedProblemDescription, String repairInformation) {
         this.id = id;
+        this.userId = userId;
         this.city = city;
         this.device = device;
         this.problemCode = problemCode;
@@ -37,6 +48,13 @@ public class WorkOrder {
     }
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getCity() {
