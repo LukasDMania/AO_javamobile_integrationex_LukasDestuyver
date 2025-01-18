@@ -32,6 +32,8 @@ public interface WorkOrderDao {
     // LiveData for observing changes
     @Query("SELECT * FROM WorkOrder")
     LiveData<List<WorkOrder>> getAllWorkOrdersLive();
+    @Query("SELECT * FROM WorkOrder WHERE id = :id")
+    LiveData<WorkOrder> getWorkOrderByIdLive(Long id);
     @Query("SELECT * FROM WorkOrder WHERE userId = :userId")
     LiveData<List<WorkOrder>> getWorkOrdersForUserLive(Long userId);
 

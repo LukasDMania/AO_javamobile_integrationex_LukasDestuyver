@@ -39,6 +39,8 @@ public interface UserDao {
     // LiveData for obseving changes
     @Query("SELECT * FROM User")
     LiveData<List<User>> getAllUsersLive();
+    @Query("SELECT * FROM User WHERE id = :id")
+    LiveData<User> getUserByIdLive(Long id);
     @Transaction
     @Query("SELECT * FROM User")
     LiveData<List<UserWithWorkOrders>> getAllUsersWithWorkOrdersLive();
