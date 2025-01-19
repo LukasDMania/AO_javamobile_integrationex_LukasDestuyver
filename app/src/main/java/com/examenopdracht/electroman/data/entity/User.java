@@ -1,5 +1,6 @@
 package com.examenopdracht.electroman.data.entity;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.Date;
@@ -22,6 +23,7 @@ public class User {
     // Constructors
     public User() {
     }
+    @Ignore
     public User(String firstName, String lastName, String userName, String password, Date birthDate, String municipality, String postalCode, String street, String houseNumber, String box) {
         this.firstName = firstName;
         this.lastName = lastName;

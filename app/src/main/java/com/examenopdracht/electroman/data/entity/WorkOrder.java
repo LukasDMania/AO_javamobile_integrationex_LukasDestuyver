@@ -3,14 +3,19 @@ package com.examenopdracht.electroman.data.entity;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(foreignKeys = @ForeignKey(
-        entity = User.class,
-        parentColumns = "id",
-        childColumns = "userId",
-        onDelete = ForeignKey.CASCADE
-))
+@Entity(
+        foreignKeys = @ForeignKey(
+                entity = User.class,
+                parentColumns = "id",
+                childColumns = "userId",
+                onDelete = ForeignKey.CASCADE
+        ),
+        indices = {@Index(value = "userId")}
+)
 public class WorkOrder {
     @PrimaryKey(autoGenerate = true)
     private Long id;
@@ -29,6 +34,7 @@ public class WorkOrder {
     // Constructors
     public WorkOrder() {
     }
+    @Ignore
     public WorkOrder(Long id, Long userId, String city, String device, String problemCode, String customerName, boolean processed, String detailedProblemDescription, String repairInformation) {
         this.id = id;
         this.userId = userId;

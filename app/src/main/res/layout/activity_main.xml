@@ -30,6 +30,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <fragment
+        android:name="com.examenopdracht.electroman.LoginFragment"
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
