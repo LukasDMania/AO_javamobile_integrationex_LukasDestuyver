@@ -3,6 +3,7 @@ package com.examenopdracht.electroman.data.repository;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.examenopdracht.electroman.data.dao.UserDao;
 import com.examenopdracht.electroman.data.database.ElectromanDatabase;
@@ -10,11 +11,10 @@ import com.examenopdracht.electroman.data.entity.User;
 import com.examenopdracht.electroman.data.relation.UserWithWorkOrders;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class UserRepository {
     private final UserDao userDao;
+    private final MutableLiveData<User> loggedInUser = new MutableLiveData<>();
 
     public UserRepository(Application application) {
         ElectromanDatabase db = ElectromanDatabase.getInstance(application);
@@ -56,8 +56,53 @@ public class UserRepository {
     public LiveData<User> getUserByIdLive(Long id) {
         return userDao.getUserByIdLive(id);
     }
+    public LiveData<User> getUserByUserNameLive(String userName){
+        return userDao.getUserByUserNameLive(userName);
+    }
     public LiveData<List<UserWithWorkOrders>> getAllUsersWithWorkOrdersLive() {
         return userDao.getAllUsersWithWorkOrdersLive();
     }
 
+    public static class LoginResult {
+        public final boolean success;
+        public final String message;
+        public final User user;
+
+        public LoginResult(boolean success, String message, User user) {
+            this.success = success;
+            this.message = message;
+            this.user = user;
+        }
+    }
+
+    public LiveData<LoginResult> login(String userName, String password) {
+        MutableLiveData<LoginResult> result = new MutableLiveData<>();
+
+        ElectromanDatabase.dbWriteExecutor.execute(() -> {
+            try {
+                User user = userDao.getUserByUserName(userName);
+                if (user != null && verifyPassword(password, user.getPassword())) {
+                    loggedInUser.postValue(user);
+                    result.postValue(new LoginResult(true, "Login successful", user));
+                } else {
+                    result.postValue(new LoginResult(false, "Invalid credentials", null));
+                }
+            } catch (Exception e) {
+                result.postValue(new LoginResult(false, "Login failed: " + e.getMessage(), null));
+            }
+        });
+
+        return result;
+    }
+
+    public LiveData<User> getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public void logout() {
+        loggedInUser.postValue(null);
+    }
+    private boolean verifyPassword(String inputPassword, String storedPassword) {
+        return inputPassword.equals(storedPassword);
+    }
 }

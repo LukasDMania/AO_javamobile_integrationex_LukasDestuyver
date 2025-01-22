@@ -41,6 +41,8 @@ public interface UserDao {
     LiveData<List<User>> getAllUsersLive();
     @Query("SELECT * FROM User WHERE id = :id")
     LiveData<User> getUserByIdLive(Long id);
+    @Query("SELECT * FROM User WHERE userName = :userName")
+    LiveData<User> getUserByUserNameLive(String userName);
     @Transaction
     @Query("SELECT * FROM User")
     LiveData<List<UserWithWorkOrders>> getAllUsersWithWorkOrdersLive();
