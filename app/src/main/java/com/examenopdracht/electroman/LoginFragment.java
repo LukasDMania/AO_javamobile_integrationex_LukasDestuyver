@@ -7,6 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,5 +71,13 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         viewDataBinding.setLoginViewModel(loginViewModel);
         viewDataBinding.setLifecycleOwner(this);
+
+        loginViewModel.getNavigateToCreateUserFragment().observe(getViewLifecycleOwner(), navigate -> {
+            if (navigate) {
+                NavController navController = NavHostFragment.findNavController(this);
+                navController.navigate(R.id.action_loginFragment_to_registerFragment);
+                loginViewModel.getNavigateToCreateUserFragment().setValue(false);
+            }
+        });
     }
 }

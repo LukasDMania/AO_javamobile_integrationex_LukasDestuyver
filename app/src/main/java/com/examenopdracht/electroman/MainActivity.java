@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
                 .findFragmentById(R.id.fragmentContainer);
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
-            NavigationUI.setupActionBarWithNavController(this, navController);
         }
     }
 
