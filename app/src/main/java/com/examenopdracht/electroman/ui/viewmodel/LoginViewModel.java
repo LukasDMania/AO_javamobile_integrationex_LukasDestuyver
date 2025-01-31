@@ -4,7 +4,6 @@ import android.app.Application;
 import android.os.Handler;
 
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.examenopdracht.electroman.data.repository.UserRepository;
@@ -21,8 +20,6 @@ public class LoginViewModel extends AndroidViewModel {
     public LoginViewModel(Application application) {
         super(application);
         userRepository = new UserRepository(application);
-        loginStatusMessage.setValue("Login successful");
-        loginErrorMessage.setValue("test");
     }
 
     public MutableLiveData<String> getUserName() {
@@ -80,5 +77,8 @@ public class LoginViewModel extends AndroidViewModel {
                 loginStatusMessage.setValue(null);
             }
         });
+    }
+    public void navigateToCreateUserFragment() {
+
     }
 }

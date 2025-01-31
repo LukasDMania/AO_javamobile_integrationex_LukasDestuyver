@@ -16,7 +16,7 @@ import com.examenopdracht.electroman.util.Converter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {User.class, WorkOrder.class}, version = 1, exportSchema = false)
+@Database(entities = {User.class, WorkOrder.class}, version = 2, exportSchema = false)
 @TypeConverters({Converter.class})
 public abstract class ElectromanDatabase extends RoomDatabase {
     private static volatile ElectromanDatabase INSTANCE;
@@ -36,7 +36,8 @@ public abstract class ElectromanDatabase extends RoomDatabase {
                             context.getApplicationContext(),
                             ElectromanDatabase.class,
                             "electroman_db"
-                    ).build();
+                    ).fallbackToDestructiveMigration()
+                     .build();
                 }
             }
         }

@@ -51,6 +51,7 @@ dependencies {
     implementation libs.concurrent.futures
     implementation libs.room.rxjava2
 
+
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
 }

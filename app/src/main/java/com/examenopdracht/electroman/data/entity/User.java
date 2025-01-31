@@ -3,7 +3,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class User {
@@ -13,7 +13,7 @@ public class User {
     private String lastName;
     private String userName;
     private String password;
-    private Date birthDate;
+    private LocalDate birthDate;
     private String municipality;
     private String postalCode;
     private String street;
@@ -24,7 +24,7 @@ public class User {
     public User() {
     }
     @Ignore
-    public User(String firstName, String lastName, String userName, String password, Date birthDate, String municipality, String postalCode, String street, String houseNumber, String box) {
+    public User(String firstName, String lastName, String userName, String password, LocalDate birthDate, String municipality, String postalCode, String street, String houseNumber, String box) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
@@ -73,10 +73,10 @@ public class User {
         this.password = password;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
