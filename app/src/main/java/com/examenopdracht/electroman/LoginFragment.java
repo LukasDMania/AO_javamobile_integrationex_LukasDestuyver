@@ -43,8 +43,11 @@ public class LoginFragment extends Fragment {
         super.onCreate(savedInstanceState);
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
+
+
         // Add mock users
         UserRepository userRepository = new UserRepository(requireActivity().getApplication());
+        //userRepository.deleteAllUsers();
         ElectromanDatabase.dbWriteExecutor.execute(() -> {
             for (User user : mockUsers) {
                 if (userRepository.getUserByUserName(user.getUserName()) == null) {
@@ -57,7 +60,7 @@ public class LoginFragment extends Fragment {
         ElectromanDatabase.dbWriteExecutor.execute(() -> {
             List<User> users = userRepository.getAllUsers();
             for (User user : users) {
-                Log.d("LoginFragment", "User: " + user.getUserName() + " " + user.getPassword());
+                Log.d("LoginFragment", "User: " + user.getId() +  user.getUserName() + " " + user.getPassword());
             }
         });
     }

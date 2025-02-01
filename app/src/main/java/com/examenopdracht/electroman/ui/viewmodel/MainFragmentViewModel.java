@@ -1,5 +1,8 @@
 package com.examenopdracht.electroman.ui.viewmodel;
 
+import android.app.Application;
+
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -11,15 +14,16 @@ import com.examenopdracht.electroman.data.repository.WorkOrderRepository;
 
 import java.util.List;
 
-public class MainFragmentViewModel extends ViewModel {
+public class MainFragmentViewModel extends AndroidViewModel {
     private final MutableLiveData<List<WorkOrder>> workOrders = new MutableLiveData<>();
     private final MutableLiveData<User> currentUser = new MutableLiveData<>();
     private final WorkOrderRepository workOrderRepository;
     private final UserRepository userRepository;
 
-    public MainFragmentViewModel(WorkOrderRepository workOrderRepository, UserRepository userRepository) {
-        this.workOrderRepository = workOrderRepository;
-        this.userRepository = userRepository;
+    public MainFragmentViewModel(Application application) {
+        super(application);
+        this.workOrderRepository = new WorkOrderRepository(application);
+        this.userRepository = new UserRepository(application);
     }
 
     public LiveData<List<WorkOrder>> getWorkOrders() {

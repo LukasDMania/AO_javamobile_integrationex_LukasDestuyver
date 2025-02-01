@@ -32,7 +32,7 @@ public class UserRepository {
         ElectromanDatabase.dbWriteExecutor.execute(() -> userDao.deleteUser(user));
     }
 
-    public void deleteAll() {
+    public void deleteAllUsers() {
         ElectromanDatabase.dbWriteExecutor.execute(userDao::deleteAll);
     }
 
