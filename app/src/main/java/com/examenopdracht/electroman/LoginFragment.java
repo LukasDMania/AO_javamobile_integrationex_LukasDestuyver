@@ -82,7 +82,7 @@ public class LoginFragment extends Fragment {
         loginViewModel.getNavigateToMainFragment().observe(getViewLifecycleOwner(), navigate -> {
             if (navigate) {
                 NavController navController = NavHostFragment.findNavController(this);
-                navController.navigate(R.id.action_loginFragment_to_registerFragment);
+                navController.navigate(R.id.action_loginFragment_to_mainFragment);
                 loginViewModel.getNavigateToCreateUserFragment().setValue(false);
             }
         });
