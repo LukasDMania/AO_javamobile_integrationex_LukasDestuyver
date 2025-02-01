@@ -35,6 +35,10 @@ public interface UserDao {
     @Query("SELECT * FROM User")
     List<UserWithWorkOrders> getAllUsersWithWorkOrders();
 
+    @Transaction
+    @Query("DELETE FROM User")
+    void deleteAll();
+
 
     // LiveData for obseving changes
     @Query("SELECT * FROM User")

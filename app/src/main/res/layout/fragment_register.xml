@@ -75,7 +75,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@={registerViewModel.birthdate}"
+                android:text="@={registerViewModel.birthdateString}"
                 android:onClick="@{() -> registerViewModel.showDatePicker()}"
                 android:hint="Birthdate"
                 android:inputType="date"
@@ -151,17 +151,29 @@
                 app:layout_constraintTop_toTopOf="@id/houseNumberInput"
                 app:layout_constraintWidth_percent="0.3" />
 
+            <CheckBox
+                android:id="@+id/termsCheckbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:checked="@={registerViewModel.termsAndConditionsAccepted}"
+                android:text="I agree to the Terms of Service"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/houseNumberInput" />
+
             <Button
                 android:id="@+id/saveButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="16dp"
-                android:text="@={() -> registerViewModel.onSaveClick()}"
+                android:onClick="@{() -> registerViewModel.onSaveClick()}"
+                android:text="Register"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/houseNumberInput" />
+                app:layout_constraintTop_toBottomOf="@id/termsCheckbox" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

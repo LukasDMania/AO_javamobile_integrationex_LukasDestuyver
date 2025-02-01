@@ -32,6 +32,10 @@ public class UserRepository {
         ElectromanDatabase.dbWriteExecutor.execute(() -> userDao.deleteUser(user));
     }
 
+    public void deleteAll() {
+        ElectromanDatabase.dbWriteExecutor.execute(userDao::deleteAll);
+    }
+
     // Query operations$
     public List<User> getAllUsers() {
         return userDao.getAllUsers();
@@ -80,7 +84,7 @@ public class UserRepository {
 
         ElectromanDatabase.dbWriteExecutor.execute(() -> {
             try {
-                User user = userDao.getUserByUserName(userName);
+                User user = getUserByUserName(userName);
                 if (user != null && verifyPassword(password, user.getPassword())) {
                     loggedInUser.postValue(user);
                     result.postValue(new LoginResult(true, "Login successful", user));

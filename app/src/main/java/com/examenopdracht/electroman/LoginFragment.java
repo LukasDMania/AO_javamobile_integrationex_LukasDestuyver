@@ -53,6 +53,13 @@ public class LoginFragment extends Fragment {
                 }
             }
         });
+
+        ElectromanDatabase.dbWriteExecutor.execute(() -> {
+            List<User> users = userRepository.getAllUsers();
+            for (User user : users) {
+                Log.d("LoginFragment", "User: " + user.getUserName() + " " + user.getPassword());
+            }
+        });
     }
 
 
@@ -72,11 +79,19 @@ public class LoginFragment extends Fragment {
         viewDataBinding.setLoginViewModel(loginViewModel);
         viewDataBinding.setLifecycleOwner(this);
 
-        loginViewModel.getNavigateToCreateUserFragment().observe(getViewLifecycleOwner(), navigate -> {
+        loginViewModel.getNavigateToMainFragment().observe(getViewLifecycleOwner(), navigate -> {
             if (navigate) {
                 NavController navController = NavHostFragment.findNavController(this);
                 navController.navigate(R.id.action_loginFragment_to_registerFragment);
                 loginViewModel.getNavigateToCreateUserFragment().setValue(false);
+            }
+        });
+
+        loginViewModel.getNavigateToCreateUserFragment().observe(getViewLifecycleOwner(), navigate -> {
+            if (navigate) {
+                NavController navController = NavHostFragment.findNavController(this);
+                navController.navigate(R.id.action_loginFragment_to_registerFragment);
+                loginViewModel.getNavigateToMainFragment().setValue(false);
             }
         });
     }

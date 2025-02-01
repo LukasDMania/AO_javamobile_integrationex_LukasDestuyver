@@ -114,4 +114,14 @@ public class User {
     public void setBox(String box) {
         this.box = box;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'';
+    };
 }

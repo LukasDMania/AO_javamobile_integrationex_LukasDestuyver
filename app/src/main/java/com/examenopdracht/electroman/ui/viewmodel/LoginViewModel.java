@@ -5,9 +5,6 @@ import android.os.Handler;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.navigation.NavDirections;
-
-import com.examenopdracht.electroman.R;
 import com.examenopdracht.electroman.data.repository.UserRepository;
 
 public class LoginViewModel extends AndroidViewModel {
@@ -16,6 +13,7 @@ public class LoginViewModel extends AndroidViewModel {
     private MutableLiveData<String> loginErrorMessage = new MutableLiveData<>();
     private MutableLiveData<String> loginStatusMessage = new MutableLiveData<>();
     private MutableLiveData<Boolean> navigateToCreateUserFragment = new MutableLiveData<>();
+    private MutableLiveData<Boolean> navigateToMainFragment = new MutableLiveData<>();
 
     private final UserRepository userRepository;
 
@@ -56,6 +54,9 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> getNavigateToCreateUserFragment() {
         return navigateToCreateUserFragment;
     }
+    public MutableLiveData<Boolean> getNavigateToMainFragment() {
+        return navigateToMainFragment;
+    }
 
     public void loginUser() {
         String usernameValue = userName.getValue();
@@ -77,7 +78,7 @@ public class LoginViewModel extends AndroidViewModel {
                 loginStatusMessage.setValue("Login successful");
                 loginErrorMessage.setValue(null);
                 new Handler().postDelayed(() -> {
-                    navigateToCreateUserFragment.setValue(true);
+                    navigateToMainFragment.setValue(true);
                 }, 3000);
             } else {
                 loginErrorMessage.setValue(result.message);
@@ -86,6 +87,6 @@ public class LoginViewModel extends AndroidViewModel {
         });
     }
     public void navigateToCreateUserFragment() {
-
+        navigateToCreateUserFragment.setValue(true);
     }
 }
