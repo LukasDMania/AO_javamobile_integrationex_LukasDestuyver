@@ -79,7 +79,7 @@ public class LoginViewModel extends AndroidViewModel {
                 loginErrorMessage.setValue(null);
                 new Handler().postDelayed(() -> {
                     navigateToMainFragment.setValue(true);
-                }, 3000);
+                }, 500);
             } else {
                 loginErrorMessage.setValue(result.message);
                 loginStatusMessage.setValue(null);
