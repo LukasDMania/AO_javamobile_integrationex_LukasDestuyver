@@ -1,0 +1,64 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#CCCCCC"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/cityHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="City(H)"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/deviceHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.25" />
+
+    <TextView
+        android:id="@+id/deviceHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Device(H)"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/problemHeader"
+        app:layout_constraintStart_toEndOf="@id/cityHeader"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.25" />
+
+    <TextView
+        android:id="@+id/problemHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Problem(H)"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/customerHeader"
+        app:layout_constraintStart_toEndOf="@id/deviceHeader"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.25" />
+
+    <TextView
+        android:id="@+id/customerHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Customer(H)"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/processedHeader"
+        app:layout_constraintStart_toEndOf="@id/problemHeader"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.15" />
+
+    <TextView
+        android:id="@+id/processedHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Processed(H)"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/customerHeader"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.10" />
+</LinearLayout>

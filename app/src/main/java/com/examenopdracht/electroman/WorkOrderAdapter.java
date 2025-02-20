@@ -16,13 +16,17 @@ import com.examenopdracht.electroman.data.entity.WorkOrder;
 import java.util.ArrayList;
 import java.util.List;
 
-class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.WorkOrderViewHolder> {
+class WorkOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_ROW = 1;
+
     private List<WorkOrder> workOrders = new ArrayList<>();
     private OnWorkOrderClickListener listener;
 
+
     private final LayoutInflater mInflater;
 
-    public WorkOrderAdapter(Context context){
+    public WorkOrderAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
     }
 
@@ -39,24 +43,50 @@ class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.WorkOrderVi
         notifyDataSetChanged();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position == 0 ? TYPE_HEADER : TYPE_ROW;
+    }
+
     @NonNull
     @Override
-    public WorkOrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = mInflater.inflate(R.layout.item_work_order, parent, false);
-        Log.d("WorkOrderAdapter", "Inflating item view");
-        return new WorkOrderViewHolder(itemView);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view;
+        if (viewType == TYPE_HEADER) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_header, parent, false);
+            return new HeaderViewHolder(view);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_row, parent, false);
+            return new WorkOrderViewHolder(view);
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WorkOrderViewHolder holder, int position) {
-        WorkOrder workOrder = workOrders.get(position);
-        Log.d("WorkOrderAdapter", "Binding work order at position: " + position + ", data: " + workOrder.toString());
-        holder.bind(workOrder);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof WorkOrderViewHolder) {
+            WorkOrder workOrder = workOrders.get(position);
+            Log.d("WorkOrderAdapter", "Binding work order at position: " + position + ", data: " + workOrder.toString());
+            ((WorkOrderViewHolder) holder).bind(workOrder);
+        }
     }
 
     @Override
     public int getItemCount() {
         return workOrders.size();
+    }
+
+    static class HeaderViewHolder extends RecyclerView.ViewHolder {
+        private TextView column1, column2, column3; // Adjust for more columns
+
+        public HeaderViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+        }
+
+        public void bind(Object header) {
+
+        }
     }
 
     class WorkOrderViewHolder extends RecyclerView.ViewHolder {
@@ -68,11 +98,11 @@ class WorkOrderAdapter extends RecyclerView.Adapter<WorkOrderAdapter.WorkOrderVi
 
         public WorkOrderViewHolder(@NonNull View itemView) {
             super(itemView);
-            cityText = itemView.findViewById(R.id.cityText);
-            deviceText = itemView.findViewById(R.id.deviceText);
-            problemText = itemView.findViewById(R.id.problemText);
-            customerText = itemView.findViewById(R.id.customerText);
-            processedCheckBox = itemView.findViewById(R.id.processedCheckBox);
+            cityText = itemView.findViewById(R.id.cityRow);
+            deviceText = itemView.findViewById(R.id.deviceRow);
+            problemText = itemView.findViewById(R.id.problemRow);
+            customerText = itemView.findViewById(R.id.customerRow);
+            processedCheckBox = itemView.findViewById(R.id.processedRow);
 
             itemView.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
