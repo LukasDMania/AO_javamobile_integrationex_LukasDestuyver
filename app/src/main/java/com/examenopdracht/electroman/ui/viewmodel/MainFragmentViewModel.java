@@ -19,6 +19,7 @@ public class MainFragmentViewModel extends AndroidViewModel {
     private MutableLiveData<List<WorkOrder>> workOrders = new MutableLiveData<>();
     private MutableLiveData<User> currentUser = new MutableLiveData<>();
     private MutableLiveData<String> userDisplayName = new MutableLiveData<>();
+    private MutableLiveData<Boolean> navigateToWorkOrderDetail = new MutableLiveData<>(false);
     private final WorkOrderRepository workOrderRepository;
     private final UserRepository userRepository;
 
@@ -26,6 +27,13 @@ public class MainFragmentViewModel extends AndroidViewModel {
         super(application);
         this.workOrderRepository = new WorkOrderRepository(application);
         this.userRepository = new UserRepository(application);
+    }
+
+    public MutableLiveData<Boolean> getNavigateToWorkOrderDetail() {
+        return navigateToWorkOrderDetail;
+    }
+    public void setNavigateToWorkOrderDetail(MutableLiveData<Boolean> navigateToWorkOrderDetail) {
+        this.navigateToWorkOrderDetail = navigateToWorkOrderDetail;
     }
 
     public MutableLiveData<String> getUserDisplayName() {

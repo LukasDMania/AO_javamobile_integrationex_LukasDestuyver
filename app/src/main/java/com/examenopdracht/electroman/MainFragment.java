@@ -7,6 +7,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -84,6 +86,14 @@ public class MainFragment extends Fragment {
         List<WorkOrder> mockData = MockData.getMockWorkOrdersForUserId(31L);
         workOrderAdapter.setWorkOrders(mockData);
 
+        // Click listener for when you click on a row
+        workOrderAdapter.setOnWorkOrderClickListener(workOrder -> {
+            Log.d("MainFragment", "WorkOrder clicked: " + workOrder.getCustomerName());
+            mainFragmentViewModel.getNavigateToWorkOrderDetail().setValue(true);
+            sharedViewModel.setSelectedWorkOrder(workOrder);
+        });
+
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
         workOrderRecyclerView.setLayoutManager(layoutManager);
         workOrderRecyclerView.setAdapter(workOrderAdapter);
@@ -106,6 +116,16 @@ public class MainFragment extends Fragment {
             Log.d("MainFragment", "Observed workOrders: " + (workOrders != null ? workOrders.size() : "null"));
             workOrderAdapter.setWorkOrders(workOrders);
         });
+
+        mainFragmentViewModel.getNavigateToWorkOrderDetail().observe(getViewLifecycleOwner(), navigate -> {
+            if (navigate) {
+                //TODO: Navigate to work order detail fragment
+                NavController navController = NavHostFragment.findNavController(this);
+                //navController.navigate(R.id.action_mainFragment_to_workOrderDetailFragment);
+                mainFragmentViewModel.getNavigateToWorkOrderDetail().setValue(false);
+            }
+        });
+
 
         sharedViewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
             if (user != null) {
