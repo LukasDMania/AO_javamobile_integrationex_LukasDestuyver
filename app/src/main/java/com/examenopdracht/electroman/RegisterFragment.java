@@ -11,24 +11,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.examenopdracht.electroman.data.database.ElectromanDatabase;
-import com.examenopdracht.electroman.data.entity.User;
-import com.examenopdracht.electroman.data.repository.UserRepository;
-import com.examenopdracht.electroman.databinding.FragmentLoginBinding;
 import com.examenopdracht.electroman.databinding.FragmentRegisterBinding;
-import com.examenopdracht.electroman.ui.viewmodel.LoginViewModel;
 import com.examenopdracht.electroman.ui.viewmodel.RegisterViewModel;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 public class RegisterFragment extends Fragment {

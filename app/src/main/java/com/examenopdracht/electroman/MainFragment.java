@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -15,52 +16,56 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.examenopdracht.electroman.data.entity.WorkOrder;
+import com.examenopdracht.electroman.databinding.FragmentMainBinding;
 import com.examenopdracht.electroman.ui.viewmodel.MainFragmentViewModel;
+import com.examenopdracht.electroman.ui.viewmodel.SharedViewModel;
 import com.examenopdracht.electroman.util.MockData;
 
 import java.util.List;
 
 public class MainFragment extends Fragment {
     private MainFragmentViewModel mainFragmentViewModel;
+    private SharedViewModel sharedViewModel;
     private WorkOrderAdapter workOrderAdapter;
     private RecyclerView workOrderRecyclerView;
-    private TextView userFullName;
     private Toolbar toolbar;
-
+    private FragmentMainBinding viewDataBinding;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainFragmentViewModel = new ViewModelProvider(this).get(MainFragmentViewModel.class);
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        Log.d("MainFragment", "onCreateView - inflating layout");
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        Log.d("MainFragment", "onCreateView - layout inflated");
-        return view;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        viewDataBinding = DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_main,
+                container,
+                false);
+
+        return viewDataBinding.getRoot();
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        viewDataBinding.setMainFragmentViewModel(mainFragmentViewModel);
+        viewDataBinding.setLifecycleOwner(this);
 
         initializeViews(view);
         setupToolbar();
         setupRecyclerView();
-        observeViewModel();
+        setupObservers();
     }
 
     private void initializeViews(View view) {
         workOrderRecyclerView = view.findViewById(R.id.workOrdersRecyclerView);
         Log.d("MainFragment", "RecyclerView reference: " + (workOrderRecyclerView != null ? "found" : "null"));
-        userFullName = view.findViewById(R.id.userFullName);
         toolbar = view.findViewById(R.id.toolbar);
     }
     private void setupToolbar(){
@@ -96,11 +101,16 @@ public class MainFragment extends Fragment {
 
     }
 
-    private void observeViewModel(){
+    private void setupObservers(){
         mainFragmentViewModel.getWorkOrders().observe(getViewLifecycleOwner(), workOrders -> {
             Log.d("MainFragment", "Observed workOrders: " + (workOrders != null ? workOrders.size() : "null"));
             workOrderAdapter.setWorkOrders(workOrders);
         });
 
+        sharedViewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
+            if (user != null) {
+                mainFragmentViewModel.setCurrentUser(user);
+            }
+        });
     }
 }

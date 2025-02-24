@@ -22,6 +22,7 @@ import com.examenopdracht.electroman.data.repository.UserRepository;
 import com.examenopdracht.electroman.data.repository.WorkOrderRepository;
 import com.examenopdracht.electroman.databinding.FragmentLoginBinding;
 import com.examenopdracht.electroman.ui.viewmodel.LoginViewModel;
+import com.examenopdracht.electroman.ui.viewmodel.SharedViewModel;
 import com.examenopdracht.electroman.util.MockData;
 
 import java.time.LocalDate;
@@ -30,12 +31,14 @@ import java.util.List;
 
 public class LoginFragment extends Fragment {
     private LoginViewModel loginViewModel;
+    private SharedViewModel sharedViewModel;
     private FragmentLoginBinding viewDataBinding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         // Add mock users
         UserRepository userRepository = new UserRepository(requireActivity().getApplication());
@@ -71,7 +74,6 @@ public class LoginFragment extends Fragment {
         });
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewDataBinding = DataBindingUtil.inflate(
@@ -101,6 +103,12 @@ public class LoginFragment extends Fragment {
                 NavController navController = NavHostFragment.findNavController(this);
                 navController.navigate(R.id.action_loginFragment_to_registerFragment);
                 loginViewModel.getNavigateToMainFragment().setValue(false);
+            }
+        });
+
+        loginViewModel.getLoggedInUser().observe(getViewLifecycleOwner(), user -> {
+            if (user != null) {
+                sharedViewModel.setCurrentUser(user);
             }
         });
     }
