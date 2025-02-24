@@ -64,9 +64,10 @@ class WorkOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof WorkOrderViewHolder) {
-            WorkOrder workOrder = workOrders.get(position);
-            Log.d("WorkOrderAdapter", "Binding work order at position: " + position + ", data: " + workOrder.toString());
+        if (holder instanceof HeaderViewHolder) {
+            ((HeaderViewHolder) holder).bind();
+        } else if (holder instanceof WorkOrderViewHolder) {
+            WorkOrder workOrder = workOrders.get(position - 1); // Adjust for header
             ((WorkOrderViewHolder) holder).bind(workOrder);
         }
     }
@@ -77,15 +78,23 @@ class WorkOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     static class HeaderViewHolder extends RecyclerView.ViewHolder {
-        private TextView column1, column2, column3; // Adjust for more columns
+        private TextView column1, column2, column3, column4, column5;
 
         public HeaderViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            column1 = itemView.findViewById(R.id.cityHeader);
+            column2 = itemView.findViewById(R.id.deviceHeader);
+            column3 = itemView.findViewById(R.id.problemHeader);
+            column4 = itemView.findViewById(R.id.customerHeader);
+            column5 = itemView.findViewById(R.id.processedHeader);
         }
 
-        public void bind(Object header) {
-
+        public void bind() {
+            column1.setText("City");
+            column2.setText("Device");
+            column3.setText("Problem");
+            column4.setText("Customer");
+            column5.setText("Processed");
         }
     }
 
