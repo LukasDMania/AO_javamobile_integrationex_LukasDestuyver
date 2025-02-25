@@ -116,6 +116,10 @@ class WorkOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             itemView.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
                 if (position != RecyclerView.NO_POSITION && listener != null) {
+                    position = position - 1;
+                }
+
+                if (position != RecyclerView.NO_POSITION && listener != null) {
                     listener.onWorkOrderClick(workOrders.get(position));
                 }
             });

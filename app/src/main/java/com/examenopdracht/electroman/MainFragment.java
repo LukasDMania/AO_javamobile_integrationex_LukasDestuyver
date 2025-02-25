@@ -61,8 +61,8 @@ public class MainFragment extends Fragment {
 
         initializeViews(view);
         setupToolbar();
-        setupRecyclerView();
         setupObservers();
+        setupRecyclerView();
     }
 
     private void initializeViews(View view) {
@@ -83,8 +83,7 @@ public class MainFragment extends Fragment {
 
     private void setupRecyclerView() {
         workOrderAdapter = new WorkOrderAdapter(requireContext());
-        List<WorkOrder> mockData = MockData.getMockWorkOrdersForUserId(31L);
-        workOrderAdapter.setWorkOrders(mockData);
+        workOrderAdapter.setWorkOrders(mainFragmentViewModel.getWorkOrders().getValue());
 
         // Click listener for when you click on a row
         workOrderAdapter.setOnWorkOrderClickListener(workOrder -> {
@@ -112,6 +111,14 @@ public class MainFragment extends Fragment {
     }
 
     private void setupObservers(){
+        sharedViewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
+            if (user != null) {
+                mainFragmentViewModel.setCurrentUser(user);
+                mainFragmentViewModel.loadWorkOrders();
+            }
+        });
+
+
         mainFragmentViewModel.getWorkOrders().observe(getViewLifecycleOwner(), workOrders -> {
             Log.d("MainFragment", "Observed workOrders: " + (workOrders != null ? workOrders.size() : "null"));
             workOrderAdapter.setWorkOrders(workOrders);
@@ -123,13 +130,6 @@ public class MainFragment extends Fragment {
                 NavController navController = NavHostFragment.findNavController(this);
                 navController.navigate(R.id.action_mainFragment_to_workOrderDetailFragment);
                 mainFragmentViewModel.getNavigateToWorkOrderDetail().setValue(false);
-            }
-        });
-
-
-        sharedViewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
-            if (user != null) {
-                mainFragmentViewModel.setCurrentUser(user);
             }
         });
     }

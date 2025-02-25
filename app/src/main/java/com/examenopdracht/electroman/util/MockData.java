@@ -6,12 +6,21 @@ import com.examenopdracht.electroman.data.database.ElectromanDatabase;
 import com.examenopdracht.electroman.data.entity.User;
 import com.examenopdracht.electroman.data.entity.WorkOrder;
 import com.examenopdracht.electroman.data.repository.UserRepository;
+import com.examenopdracht.electroman.data.repository.WorkOrderRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MockData {
+
+    private UserRepository userRepository;
+    private WorkOrderRepository workOrderRepository;
+    public MockData(Application application)
+    {
+        userRepository = new UserRepository(application);
+        workOrderRepository = new WorkOrderRepository(application);
+    }
     public static List<WorkOrder> getMockWorkOrdersForUserId(Long userId) {
         List<WorkOrder> mockOrders = new ArrayList<>();
 

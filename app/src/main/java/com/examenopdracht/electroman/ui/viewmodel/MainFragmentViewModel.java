@@ -61,14 +61,14 @@ public class MainFragmentViewModel extends AndroidViewModel {
         }
         Log.d("MainFragmentViewModel", "User Display Name: " + userDisplayName.getValue());
     }
-    //Load data
     public void loadWorkOrders(){
-        //TODO: Implement loading work orders based on the user
-    }
-    public void loadCurrentUser(){
-        //TODO: Implement loading current user
-    }
-    public void markWorkOrderAsProcessed(WorkOrder workOrder) {
-        //TODO: Implement marking work order as processed
+        if (currentUser.getValue() != null) {
+            workOrderRepository.getWorkOrdersForUserLive(currentUser.getValue().getId())
+                    .observeForever(orders -> {
+                        workOrders.setValue(orders);
+                    });
+        } else {
+            Log.e("MainFragmentViewModel", "Cannot load work orders: currentUser is null");
+        }
     }
 }
