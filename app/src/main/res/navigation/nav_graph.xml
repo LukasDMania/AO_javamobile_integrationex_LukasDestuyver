@@ -34,5 +34,17 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.examenopdracht.electroman.MainFragment"
-        android:label="MainFragment" />
+        android:label="MainFragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_workOrderDetailFragment"
+            app:destination="@id/workOrderDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/workOrderDetailFragment"
+        android:name="com.examenopdracht.electroman.WorkOrderDetailFragment"
+        android:label="WorkOrderDetailFragment" >
+        <action
+            android:id="@+id/action_workOrderDetailFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 </navigation>

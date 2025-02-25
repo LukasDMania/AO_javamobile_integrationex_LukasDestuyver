@@ -1,176 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <data>
+        <!-- Declare your ViewModel or variables here for binding -->
+        <variable
+            name="workOrderDetailViewModel"
+            type="com.examenopdracht.electroman.ui.viewmodel.WorkOrderDetailViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"/>
+            android:layout_height="wrap_content">
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary" />
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <TextView
-                android:id="@+id/tvCustomerNameLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Customer:"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tvCustomerName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/tvCustomerNameLabel"
-                app:layout_constraintTop_toTopOf="@+id/tvCustomerNameLabel"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:text="John Doe" />
-
-            <TextView
-                android:id="@+id/tvCityLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="City:"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCustomerName" />
-
-            <TextView
-                android:id="@+id/tvCity"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/tvCityLabel"
-                app:layout_constraintTop_toTopOf="@+id/tvCityLabel"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:text="Brussels" />
-
-            <TextView
-                android:id="@+id/tvDeviceLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Device:"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvCity" />
-
-            <TextView
-                android:id="@+id/tvDevice"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/tvDeviceLabel"
-                app:layout_constraintTop_toTopOf="@+id/tvDeviceLabel"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:text="Refrigerator" />
-
-            <TextView
-                android:id="@+id/tvProblemCodeLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Problem Code:"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDevice" />
-
-            <TextView
-                android:id="@+id/tvProblemCode"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/tvProblemCodeLabel"
-                app:layout_constraintTop_toTopOf="@+id/tvProblemCodeLabel"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:text="REF-001" />
-
-            <TextView
-                android:id="@+id/tvProblemDescriptionLabel"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Problem Description:"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvProblemCode" />
+                android:layout_height="match_parent"
+                android:padding="16dp">
 
-            <TextView
-                android:id="@+id/tvProblemDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:padding="12dp"
-                android:minHeight="100dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvProblemDescriptionLabel"
-                tools:text="The refrigerator is not cooling properly. Customer reports items in freezer starting to thaw." />
+                <TextView
+                    android:id="@+id/tvCustomerNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Customer:"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvRepairInfoLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="Repair Information:"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvProblemDescription" />
+                <TextView
+                    android:id="@+id/tvCustomerName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/tvCustomerNameLabel"
+                    app:layout_constraintTop_toTopOf="@+id/tvCustomerNameLabel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="John Doe"
+                    android:text="@{workOrderDetailViewModel.workOrderDetail.customerName}" />
 
-            <EditText
-                android:id="@+id/etRepairInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="top|start"
-                android:inputType="textMultiLine"
-                android:minHeight="150dp"
-                android:padding="12dp"
-                android:hint="Enter repair actions taken..."
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvRepairInfoLabel" />
+                <TextView
+                    android:id="@+id/tvCityLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="City:"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCustomerName" />
 
-            <TextView
-                android:id="@+id/tvErrorMessage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textColor="#FF0000"
-                android:textStyle="bold"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etRepairInfo"
-                tools:text="Please enter repair information before saving"
-                tools:visibility="visible" />
+                <TextView
+                    android:id="@+id/tvCity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/tvCityLabel"
+                    app:layout_constraintTop_toTopOf="@+id/tvCityLabel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="Brussels"
+                    android:text="@{workOrderDetailViewModel.workOrderDetail.city}" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+                <TextView
+                    android:id="@+id/tvDeviceLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Device:"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCity" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <TextView
+                    android:id="@+id/tvDevice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/tvDeviceLabel"
+                    app:layout_constraintTop_toTopOf="@+id/tvDeviceLabel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="Refrigerator"
+                    android:text="@{workOrderDetailViewModel.workOrderDetail.device}" />
+
+                <TextView
+                    android:id="@+id/tvProblemCodeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Problem Code:"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDevice" />
+
+                <TextView
+                    android:id="@+id/tvProblemCode"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toEndOf="@+id/tvProblemCodeLabel"
+                    app:layout_constraintTop_toTopOf="@+id/tvProblemCodeLabel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="REF-001"
+                    android:text="@{workOrderDetailViewModel.workOrderDetail.problemCode}" />
+
+                <TextView
+                    android:id="@+id/tvProblemDescriptionLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Problem Description:"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProblemCode" />
+
+                <TextView
+                    android:id="@+id/tvProblemDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="12dp"
+                    android:minHeight="100dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProblemDescriptionLabel"
+                    tools:text="The refrigerator is not cooling properly. Customer reports items in freezer starting to thaw."
+                    android:text="@{workOrderDetailViewModel.workOrderDetail.detailedProblemDescription}" />
+
+                <TextView
+                    android:id="@+id/tvRepairInfoLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Repair Information:"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProblemDescription" />
+
+                <EditText
+                    android:id="@+id/etRepairInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine"
+                    android:minHeight="150dp"
+                    android:padding="12dp"
+                    android:hint="Enter repair actions taken..."
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRepairInfoLabel"
+                    android:text="@={workOrderDetailViewModel.workOrderDetail.repairInformation}" />
+
+                <TextView
+                    android:id="@+id/tvErrorMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="#FF0000"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etRepairInfo"
+                    tools:text="Please enter repair information before saving"
+                    tools:visibility="visible" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

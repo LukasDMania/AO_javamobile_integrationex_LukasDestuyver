@@ -121,7 +121,7 @@ public class MainFragment extends Fragment {
             if (navigate) {
                 //TODO: Navigate to work order detail fragment
                 NavController navController = NavHostFragment.findNavController(this);
-                //navController.navigate(R.id.action_mainFragment_to_workOrderDetailFragment);
+                navController.navigate(R.id.action_mainFragment_to_workOrderDetailFragment);
                 mainFragmentViewModel.getNavigateToWorkOrderDetail().setValue(false);
             }
         });
