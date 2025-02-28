@@ -38,6 +38,9 @@
         <action
             android:id="@+id/action_mainFragment_to_workOrderDetailFragment"
             app:destination="@id/workOrderDetailFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_createWorkOrderFragment"
+            app:destination="@id/createWorkOrderFragment" />
     </fragment>
     <fragment
         android:id="@+id/workOrderDetailFragment"
@@ -45,6 +48,14 @@
         android:label="WorkOrderDetailFragment" >
         <action
             android:id="@+id/action_workOrderDetailFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createWorkOrderFragment"
+        android:name="com.examenopdracht.electroman.CreateWorkOrderFragment"
+        android:label="CreateWorkOrderFragment" >
+        <action
+            android:id="@+id/action_createWorkOrderFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
     </fragment>
 </navigation>

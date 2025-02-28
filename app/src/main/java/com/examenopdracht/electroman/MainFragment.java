@@ -2,8 +2,10 @@ package com.examenopdracht.electroman;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +36,6 @@ public class MainFragment extends Fragment {
     private SharedViewModel sharedViewModel;
     private WorkOrderAdapter workOrderAdapter;
     private RecyclerView workOrderRecyclerView;
-    private Toolbar toolbar;
     private FragmentMainBinding viewDataBinding;
 
 
@@ -56,11 +59,15 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         viewDataBinding.setMainFragmentViewModel(mainFragmentViewModel);
         viewDataBinding.setLifecycleOwner(this);
 
         initializeViews(view);
-        setupToolbar();
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(viewDataBinding.toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Overview");
+
+        setupMenu();
         setupObservers();
         setupRecyclerView();
     }
@@ -68,17 +75,29 @@ public class MainFragment extends Fragment {
     private void initializeViews(View view) {
         workOrderRecyclerView = view.findViewById(R.id.workOrdersRecyclerView);
         Log.d("MainFragment", "RecyclerView reference: " + (workOrderRecyclerView != null ? "found" : "null"));
-        toolbar = view.findViewById(R.id.toolbar);
     }
-    private void setupToolbar(){
-        AppCompatActivity activity = (AppCompatActivity) requireActivity();
-        activity.setSupportActionBar(toolbar);
+    private void setupMenu(){
+        Log.d("MainFragment", "Setting up menu");
+        MenuProvider menuProvider = new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.main_fragment_menu, menu);
+            }
 
-        //toolbar.inflateMenu(R.menu.);
-        toolbar.setOnMenuItemClickListener(this::handleToolbarMenuClick);
-    }
-    private boolean handleToolbarMenuClick(MenuItem item){
-        return false;
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+
+                if (id == R.id.main_fragment_menu_add) {
+                    NavController navController = NavHostFragment.findNavController(MainFragment.this);
+                    navController.navigate(R.id.action_mainFragment_to_createWorkOrderFragment);
+                    return true;
+                }
+                return false;
+            }
+        };
+
+        requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner());
     }
 
     private void setupRecyclerView() {

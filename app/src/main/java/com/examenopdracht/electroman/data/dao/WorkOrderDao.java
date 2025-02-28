@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.examenopdracht.electroman.data.entity.WorkOrder;
@@ -19,6 +20,9 @@ public interface WorkOrderDao {
     void updateWorkOrder(WorkOrder workOrder);
     @Delete
     void deleteWorkOrder(WorkOrder workOrder);
+    @Transaction
+    @Query("DELETE FROM WorkOrder")
+    void deleteAll();
 
     @Query("SELECT * FROM WorkOrder")
     List<WorkOrder> getAllWorkOrders();

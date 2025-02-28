@@ -77,7 +77,7 @@ public class WorkOrderDetailFragment extends Fragment {
             public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
 
-                if (id == R.id.action_save) {
+                if (id == R.id.work_order_detail_action_save) {
                     if (workOrderDetailViewModel.validRepairInfo()){
                         Log.d("WorkOrderDetailFragment", "Saving work order details");
                         workOrderDetailViewModel.updateWorkOrder();
@@ -97,7 +97,7 @@ public class WorkOrderDetailFragment extends Fragment {
                         Log.d("ERROR_MESSAGE", "Error message: " + workOrderDetailViewModel.getErrorMessage().getValue());
                         Log.d("ERROR_MESSAGE", "Error message visibility: " + viewDataBinding.tvErrorMessage.getVisibility());
                     }
-                } else if (id == R.id.action_cancel) {
+                } else if (id == R.id.work_order_detail_action_cancel) {
                     getActivity().getOnBackPressedDispatcher().onBackPressed();
                     return true;
                 }

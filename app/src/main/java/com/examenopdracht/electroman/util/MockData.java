@@ -21,12 +21,14 @@ public class MockData {
         userRepository = new UserRepository(application);
         workOrderRepository = new WorkOrderRepository(application);
     }
-    public static List<WorkOrder> getMockWorkOrdersForUserId(Long userId) {
-        List<WorkOrder> mockOrders = new ArrayList<>();
+    private void insertMockWorkOrdersForAdmin() {
+        User admin = userRepository.getUserByUserName("admin");
+        if (admin == null) { return; };
 
         for (int i = 1; i <= 10; i++) {
+            if (workOrderRepository.getWorkOrderById((long) i) != null) { return ;}
             WorkOrder workOrder = new WorkOrder();
-            workOrder.setUserId(userId);
+            workOrder.setUserId(admin.getId());
             workOrder.setCity("City " + i);
             workOrder.setDevice("Device " + i);
             workOrder.setProblemCode("Problem " + i);
@@ -35,16 +37,29 @@ public class MockData {
             workOrder.setDetailedProblemDescription("Detailed description of problem " + i);
             workOrder.setRepairInformation("Repair information for device " + i);
 
-            mockOrders.add(workOrder);
+            workOrderRepository.insertWorkOrder(workOrder);
         }
-
-        return mockOrders;
     }
 
-    public static List<User> getMockUsers(int amountOfMockUsers) {
-        List<User> mockUsers = new ArrayList<>();
+    public void insertMockUsers(int amountOfMockUsers) {
+        if(userRepository.getUserByUserName("admin") == null) {
+            User user = new User();
+            user.setUserName("admin");
+            user.setPassword("admin");
+            user.setFirstName("AdminFN");
+            user.setLastName("AdminLN");
+            user.setBirthDate(LocalDate.now());
+            user.setBox("Admin Box");
+            user.setHouseNumber("Admin House Number");
+            user.setStreet("Admin Street");
+            user.setMunicipality("Admin Municipality");
+            user.setPostalCode("Admin Postal Code 0000");
+            userRepository.insertUser(user);
+        }
+
 
         for (int i = 0; i < amountOfMockUsers; i++) {
+            if (userRepository.getUserByUserName("user" + i) != null) { return ;}
             User user = new User();
             user.setUserName("user" + i);
             user.setPassword("admin");
@@ -57,9 +72,9 @@ public class MockData {
             user.setMunicipality("Test Municipality" + i);
             user.setPostalCode("0000" + i);
 
-            mockUsers.add(user);
+            userRepository.insertUser(user);
         }
 
-        return mockUsers;
+        insertMockWorkOrdersForAdmin();
     }
 }

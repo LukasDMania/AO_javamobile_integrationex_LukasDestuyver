@@ -53,4 +53,7 @@ public class WorkOrderRepository {
         return workOrderDao.getWorkOrdersForUserLive(userId);
     }
 
+    public void deleteAllWorkOrders() {
+        ElectromanDatabase.dbWriteExecutor.execute(workOrderDao::deleteAll);
+    }
 }

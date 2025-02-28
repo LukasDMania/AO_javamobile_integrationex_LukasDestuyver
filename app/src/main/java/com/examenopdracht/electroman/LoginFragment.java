@@ -34,6 +34,8 @@ public class LoginFragment extends Fragment {
     private SharedViewModel sharedViewModel;
     private FragmentLoginBinding viewDataBinding;
 
+    private MockData mockData;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,35 +45,15 @@ public class LoginFragment extends Fragment {
         // Add mock users
         UserRepository userRepository = new UserRepository(requireActivity().getApplication());
         WorkOrderRepository workOrderRepository = new WorkOrderRepository(requireActivity().getApplication());
-        //userRepository.deleteAllUsers();
-        ElectromanDatabase.dbWriteExecutor.execute(() -> {
-            for (User user : MockData.getMockUsers(10)) {
-                if (userRepository.getUserByUserName(user.getUserName()) == null) {
-                    Log.d("LoginFragment", "Inserting user: " + user.getUserName() + " " + user.getPassword());
-                    userRepository.insertUser(user);
-                }
-            }
-        });
+        userRepository.deleteAllUsers();
+        workOrderRepository.deleteAllWorkOrders();
 
-       //ElectromanDatabase.dbWriteExecutor.execute(() -> {
-       //    List<WorkOrder> mockWorkOrders = MockData.getMockWorkOrdersForUserId(31L);
-       //    for (WorkOrder workOrder : mockWorkOrders) {
-       //        if (workOrderRepository.getWorkOrderById(workOrder.getId()) == null){
-       //            workOrderRepository.insertWorkOrder(workOrder);
-       //        }
-       //    }
-       //});
+        mockData = new MockData(getActivity().getApplication());
 
         ElectromanDatabase.dbWriteExecutor.execute(() -> {
-            List<User> users = userRepository.getAllUsers();
-            List<WorkOrder> workOrders = workOrderRepository.getAllWorkOrders();
-            for (User user : users) {
-                Log.d("LoginFragment", "User: " + user.getId() +  user.getUserName() + " " + user.getPassword());
-            }
-            for (WorkOrder workOrder : workOrders) {
-                Log.d("LoginFragment", "WorkOrder: " + workOrder.getId() +  workOrder.getUserId() + " " + workOrder.getProblemCode());
-            }
+            mockData.insertMockUsers(10);
         });
+
     }
 
     @Override
