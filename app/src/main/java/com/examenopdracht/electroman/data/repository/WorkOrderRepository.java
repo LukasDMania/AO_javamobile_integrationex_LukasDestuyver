@@ -56,4 +56,8 @@ public class WorkOrderRepository {
     public void deleteAllWorkOrders() {
         ElectromanDatabase.dbWriteExecutor.execute(workOrderDao::deleteAll);
     }
+
+    public LiveData<Integer> doesWorkOrderExist(String city, String device, String problemCode) {
+        return workOrderDao.doesWorkOrderExist(city, device, problemCode);
+    }
 }

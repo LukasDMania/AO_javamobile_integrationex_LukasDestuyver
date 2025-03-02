@@ -3,7 +3,6 @@ package com.examenopdracht.electroman;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuProvider;
 import androidx.databinding.DataBindingUtil;
@@ -12,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +29,8 @@ public class CreateWorkOrderFragment extends Fragment {
     private WorkOrderCreateViewModel workOrderCreateViewModel;
     private SharedViewModel sharedViewModel;
     private FragmentCreateWorkOrderBinding viewDataBinding;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,11 +79,15 @@ public class CreateWorkOrderFragment extends Fragment {
                 int id = menuItem.getItemId();
 
                 if (id == R.id.work_order_create_action_save) {
-                    //TODO: implement validating and saving work order
-                    workOrderCreateViewModel.insertWorkOrder(Objects.requireNonNull(sharedViewModel.getCurrentUser().getValue()).getId());
-                    NavController navController = NavHostFragment.findNavController(CreateWorkOrderFragment.this);
-                    navController.navigate(R.id.action_createWorkOrderFragment_to_mainFragment);
-                    return true;
+                    if (workOrderCreateViewModel.validInputWorkOrder()) {
+                        workOrderCreateViewModel.insertWorkOrder(Objects.requireNonNull(sharedViewModel.getCurrentUser().getValue()).getId());
+                        NavController navController = NavHostFragment.findNavController(CreateWorkOrderFragment.this);
+                        navController.navigate(R.id.action_createWorkOrderFragment_to_mainFragment);
+                        return true;
+                    } else {
+                        Log.d("CreateWorkOrderFragment", "setupMenu: " + workOrderCreateViewModel.getErrorMessage().getValue());
+                        viewDataBinding.errorMessageTextView.setVisibility(View.VISIBLE);
+                    }
                 } else if (id == R.id.work_order_create_action_cancel) {
                     getActivity().getOnBackPressedDispatcher().onBackPressed();
                     return true;

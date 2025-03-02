@@ -7,9 +7,12 @@ import androidx.lifecycle.ViewModel;
 import com.examenopdracht.electroman.data.entity.User;
 import com.examenopdracht.electroman.data.entity.WorkOrder;
 
+import java.util.List;
+
 public class SharedViewModel extends ViewModel {
     private final MutableLiveData<User> currentUser = new MutableLiveData<>();
     private final MutableLiveData<WorkOrder> selectedWorkOrder = new MutableLiveData<>();
+    private final MutableLiveData<List<WorkOrder>> allWorkOrders = new MutableLiveData<>();
 
     public void setCurrentUser(User user) {
         currentUser.setValue(user);
@@ -23,5 +26,12 @@ public class SharedViewModel extends ViewModel {
     }
     public LiveData<WorkOrder> getSelectedWorkOrder() {
         return selectedWorkOrder;
+    }
+
+    public MutableLiveData<List<WorkOrder>> getAllWorkOrders() {
+        return allWorkOrders;
+    }
+    public void setAllWorkOrders(List<WorkOrder> workOrders) {
+        allWorkOrders.setValue(workOrders);
     }
 }

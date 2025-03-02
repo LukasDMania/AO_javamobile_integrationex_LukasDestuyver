@@ -33,6 +33,10 @@ public interface WorkOrderDao {
     @Query("SELECT * FROM WorkOrder WHERE processed = :isProcessed")
     List<WorkOrder> getWorkOrdersByProcessedStatus(boolean isProcessed);
 
+    @Query("SELECT COUNT(*) FROM WorkOrder WHERE city = :city AND device = :device AND problemCode = :problemCode")
+    LiveData<Integer> doesWorkOrderExist(String city, String device, String problemCode);
+
+
     // LiveData for observing changes
     @Query("SELECT * FROM WorkOrder")
     LiveData<List<WorkOrder>> getAllWorkOrdersLive();

@@ -1,23 +1,12 @@
 package com.examenopdracht.electroman.ui.viewmodel;
 
 import android.app.Application;
-import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.MenuProvider;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 
-import com.examenopdracht.electroman.R;
-import com.examenopdracht.electroman.WorkOrderDetailFragment;
 import com.examenopdracht.electroman.data.entity.WorkOrder;
 import com.examenopdracht.electroman.data.repository.WorkOrderRepository;
 
@@ -77,6 +66,25 @@ public class WorkOrderCreateViewModel extends AndroidViewModel {
         workOrderRepository = new WorkOrderRepository(application);
     }
 
+    public boolean validInputWorkOrder(){
+        if (city.getValue() == null || city.getValue().isEmpty()) {
+            errorMessage.setValue("City cannot be empty");
+            return false;}
+
+        if (device.getValue() == null || device.getValue().isEmpty()) {
+            errorMessage.setValue("Device cannot be empty");
+            return false;}
+        if (problemCode.getValue() == null || problemCode.getValue().isEmpty()) {
+            errorMessage.setValue("ProblemCode cannot be empty");
+            return false;}
+        if (customerName.getValue() == null || customerName.getValue().isEmpty()) {
+            errorMessage.setValue("CustomerName cannot be empty");
+            return false;
+        }
+
+
+        return true;
+    }
     public void insertWorkOrder(long userId){
         Log.d("WorkOrderCreateViewModel", "insertWorkOrder: " + city.getValue() + " " + device.getValue() + " " + problemCode.getValue() + " " + customerName.getValue());
         WorkOrder workOrder = new WorkOrder(
