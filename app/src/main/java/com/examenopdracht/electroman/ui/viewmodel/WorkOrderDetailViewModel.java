@@ -52,4 +52,13 @@ public class WorkOrderDetailViewModel extends AndroidViewModel {
         Log.d("WorkOrderDetailViewModel", "Is valid: " + !Objects.equals(workOrderDetail.getValue().getRepairInformation(), initialRepairInfo));
         return !Objects.equals(workOrderDetail.getValue().getRepairInformation(), initialRepairInfo);
     }
+
+    public void reopenWorkOrder() {
+        WorkOrder workorder = workOrderDetail.getValue();
+        if (workorder != null && workorder.isProcessed()) {
+            workorder.setProcessed(false);
+            workOrderRepository.updateWorkOrder(workorder);
+            workOrderDetail.setValue(workorder);
+        }
+    }
 }

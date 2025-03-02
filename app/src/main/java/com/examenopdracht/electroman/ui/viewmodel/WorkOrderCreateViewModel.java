@@ -18,6 +18,8 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.examenopdracht.electroman.R;
 import com.examenopdracht.electroman.WorkOrderDetailFragment;
+import com.examenopdracht.electroman.data.entity.WorkOrder;
+import com.examenopdracht.electroman.data.repository.WorkOrderRepository;
 
 public class WorkOrderCreateViewModel extends AndroidViewModel {
 
@@ -25,6 +27,10 @@ public class WorkOrderCreateViewModel extends AndroidViewModel {
     private MutableLiveData<String> device = new MutableLiveData<>();
     private MutableLiveData<String> problemCode = new MutableLiveData<>();
     private MutableLiveData<String> customerName = new MutableLiveData<>();
+
+    private MutableLiveData<String> errorMessage = new MutableLiveData<>();
+
+    private WorkOrderRepository workOrderRepository;
 
     public MutableLiveData<String> getCity() {
         return city;
@@ -58,7 +64,33 @@ public class WorkOrderCreateViewModel extends AndroidViewModel {
         this.customerName = customerName;
     }
 
+    public MutableLiveData<String> getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(MutableLiveData<String> errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
     public WorkOrderCreateViewModel(@NonNull Application application) {
         super(application);
+        workOrderRepository = new WorkOrderRepository(application);
+    }
+
+    public void insertWorkOrder(long userId){
+        Log.d("WorkOrderCreateViewModel", "insertWorkOrder: " + city.getValue() + " " + device.getValue() + " " + problemCode.getValue() + " " + customerName.getValue());
+        WorkOrder workOrder = new WorkOrder(
+                null,
+                userId,
+                city.getValue(),
+                device.getValue(),
+                problemCode.getValue(),
+                customerName.getValue(),
+                false,
+                "",
+                ""
+        );
+
+        workOrderRepository.insertWorkOrder(workOrder);
     }
 }

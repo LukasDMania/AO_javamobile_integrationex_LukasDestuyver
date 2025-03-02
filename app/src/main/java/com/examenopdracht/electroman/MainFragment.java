@@ -140,6 +140,9 @@ public class MainFragment extends Fragment {
 
         mainFragmentViewModel.getWorkOrders().observe(getViewLifecycleOwner(), workOrders -> {
             Log.d("MainFragment", "Observed workOrders: " + (workOrders != null ? workOrders.size() : "null"));
+            for (WorkOrder workOrder : workOrders) {
+                Log.d("MainFragment", "WorkOrder: " + workOrder.toString());
+            };
             workOrderAdapter.setWorkOrders(workOrders);
         });
 

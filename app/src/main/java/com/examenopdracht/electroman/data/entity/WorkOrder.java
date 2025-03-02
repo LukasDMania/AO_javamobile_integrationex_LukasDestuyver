@@ -116,7 +116,7 @@ public class WorkOrder {
     @Override
     public String toString() {
         return "WorkOrder{" +
-                "id=" + id +
+                "userId=" + userId +
                 ", city='" + city + '\'' +
                 ", device='" + device + '\'' +
                 ", problemCode='" + problemCode + '\'' +

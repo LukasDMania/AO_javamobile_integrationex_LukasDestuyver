@@ -39,6 +39,7 @@ class WorkOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void setWorkOrders(List<WorkOrder> newWorkOrders) {
+        Log.d("WorkOrderAdapter", "Setting workOrders: " + (newWorkOrders != null ? newWorkOrders.size() : "null"));
         this.workOrders = newWorkOrders == null ? new ArrayList<>() : new ArrayList<>(newWorkOrders);
         notifyDataSetChanged();
     }
@@ -74,7 +75,7 @@ class WorkOrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return workOrders.size();
+        return workOrders.size() + 1;
     }
 
     static class HeaderViewHolder extends RecyclerView.ViewHolder {

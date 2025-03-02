@@ -70,7 +70,14 @@ public class WorkOrderDetailFragment extends Fragment {
         MenuProvider menuProvider = new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.work_order_detail_menu, menu);
+                menu.clear();
+
+                WorkOrder workOrder = sharedViewModel.getSelectedWorkOrder().getValue();
+                if (workOrder != null && workOrder.isProcessed()) {
+                    menuInflater.inflate(R.menu.work_order_detail_processed_menu, menu);
+                } else {
+                    menuInflater.inflate(R.menu.work_order_detail_unprocessed_menu, menu);
+                }
             }
 
             @Override
@@ -100,6 +107,11 @@ public class WorkOrderDetailFragment extends Fragment {
                 } else if (id == R.id.work_order_detail_action_cancel) {
                     getActivity().getOnBackPressedDispatcher().onBackPressed();
                     return true;
+                } else if (id == R.id.work_order_detail_action_reopen) {
+                    Log.d("WorkOrderDetailFragment", "Reopening work order");
+                    workOrderDetailViewModel.reopenWorkOrder();
+                    viewDataBinding.etRepairInfo.setEnabled(true);
+                    requireActivity().invalidateOptionsMenu();
                 }
 
                 return false;

@@ -25,6 +25,8 @@ import com.examenopdracht.electroman.databinding.FragmentCreateWorkOrderBinding;
 import com.examenopdracht.electroman.ui.viewmodel.SharedViewModel;
 import com.examenopdracht.electroman.ui.viewmodel.WorkOrderCreateViewModel;
 
+import java.util.Objects;
+
 public class CreateWorkOrderFragment extends Fragment {
     private WorkOrderCreateViewModel workOrderCreateViewModel;
     private SharedViewModel sharedViewModel;
@@ -69,7 +71,7 @@ public class CreateWorkOrderFragment extends Fragment {
         MenuProvider menuProvider = new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.work_order_detail_menu, menu);
+                menuInflater.inflate(R.menu.work_order_create_menu, menu);
             }
 
             @Override
@@ -77,7 +79,10 @@ public class CreateWorkOrderFragment extends Fragment {
                 int id = menuItem.getItemId();
 
                 if (id == R.id.work_order_create_action_save) {
-                    //TODO: implement
+                    //TODO: implement validating and saving work order
+                    workOrderCreateViewModel.insertWorkOrder(Objects.requireNonNull(sharedViewModel.getCurrentUser().getValue()).getId());
+                    NavController navController = NavHostFragment.findNavController(CreateWorkOrderFragment.this);
+                    navController.navigate(R.id.action_createWorkOrderFragment_to_mainFragment);
                     return true;
                 } else if (id == R.id.work_order_create_action_cancel) {
                     getActivity().getOnBackPressedDispatcher().onBackPressed();
