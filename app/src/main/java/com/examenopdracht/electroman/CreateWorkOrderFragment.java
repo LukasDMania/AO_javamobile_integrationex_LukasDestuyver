@@ -91,7 +91,6 @@ public class CreateWorkOrderFragment extends Fragment {
 
                         workOrderCreateViewModel.getInsertSuccess().observe(getViewLifecycleOwner(), success -> {
                             if (success) {
-                                // Check if we're already at the main fragment
                                 NavController navController = NavHostFragment.findNavController(CreateWorkOrderFragment.this);
                                 if (navController.getCurrentDestination().getId() != R.id.mainFragment) {
                                     navController.navigate(R.id.action_createWorkOrderFragment_to_mainFragment);
