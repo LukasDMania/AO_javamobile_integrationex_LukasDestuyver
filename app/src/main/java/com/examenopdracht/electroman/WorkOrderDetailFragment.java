@@ -1,18 +1,6 @@
 package com.examenopdracht.electroman;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuPopupHelper;
-import androidx.core.view.MenuProvider;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,15 +10,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuProvider;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+
 import com.examenopdracht.electroman.data.entity.WorkOrder;
 import com.examenopdracht.electroman.databinding.FragmentDetailBinding;
-import com.examenopdracht.electroman.ui.viewmodel.MainFragmentViewModel;
-import com.examenopdracht.electroman.ui.viewmodel.RegisterViewModel;
 import com.examenopdracht.electroman.ui.viewmodel.SharedViewModel;
 import com.examenopdracht.electroman.ui.viewmodel.WorkOrderDetailViewModel;
+
 public class WorkOrderDetailFragment extends Fragment {
     private WorkOrderDetailViewModel workOrderDetailViewModel;
     private SharedViewModel sharedViewModel;
+
     private FragmentDetailBinding viewDataBinding;
 
     @Override
@@ -54,19 +52,25 @@ public class WorkOrderDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewDataBinding.setWorkOrderDetailViewModel(workOrderDetailViewModel);
-        viewDataBinding.setLifecycleOwner(this);
 
+        initializeDataBinding();
+        setupToolbar();
         setupObservers();
-
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(viewDataBinding.toolbar);
-        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Work Order Details");
-
         setupMenu();
     }
 
-    private void setupMenu(){
+    private void initializeDataBinding() {
+        viewDataBinding.setWorkOrderDetailViewModel(workOrderDetailViewModel);
+        viewDataBinding.setLifecycleOwner(this);
+    }
+
+    private void setupToolbar() {
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(viewDataBinding.toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Work Order Details");
+    }
+
+    private void setupMenu() {
         MenuProvider menuProvider = new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
@@ -85,24 +89,14 @@ public class WorkOrderDetailFragment extends Fragment {
                 int id = menuItem.getItemId();
 
                 if (id == R.id.work_order_detail_action_save) {
-                    if (workOrderDetailViewModel.validRepairInfo()){
+                    if (workOrderDetailViewModel.validRepairInfo()) {
                         Log.d("WorkOrderDetailFragment", "Saving work order details");
                         workOrderDetailViewModel.updateWorkOrder();
                         NavController navController = NavHostFragment.findNavController(WorkOrderDetailFragment.this);
                         navController.navigate(R.id.action_workOrderDetailFragment_to_mainFragment);
                         return true;
                     } else {
-                        Log.d("ERROR_MESSAGE", "Showing error message");
-                        viewDataBinding.tvErrorMessage.setVisibility(View.VISIBLE);
-                        new Handler().postDelayed(() -> {
-                            viewDataBinding.tvErrorMessage.animate()
-                                    .alpha(0f)
-                                    .setDuration(800)
-                                    .withEndAction(() -> viewDataBinding.tvErrorMessage.setVisibility(View.GONE));  // Set visibility to GONE after fading out
-                        }, 3000);
-
-                        Log.d("ERROR_MESSAGE", "Error message: " + workOrderDetailViewModel.getErrorMessage().getValue());
-                        Log.d("ERROR_MESSAGE", "Error message visibility: " + viewDataBinding.tvErrorMessage.getVisibility());
+                        showErrorMessage();
                     }
                 } else if (id == R.id.work_order_detail_action_cancel) {
                     getActivity().getOnBackPressedDispatcher().onBackPressed();
@@ -112,6 +106,7 @@ public class WorkOrderDetailFragment extends Fragment {
                     workOrderDetailViewModel.reopenWorkOrder();
                     viewDataBinding.etRepairInfo.setEnabled(true);
                     requireActivity().invalidateOptionsMenu();
+                    return true;
                 }
 
                 return false;
@@ -121,8 +116,7 @@ public class WorkOrderDetailFragment extends Fragment {
         requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner());
     }
 
-    private void setupObservers(){
-        //TODO:
+    private void setupObservers() {
         sharedViewModel.getSelectedWorkOrder().observe(getViewLifecycleOwner(), workOrder -> {
             if (workOrder != null) {
                 workOrderDetailViewModel.setWorkOrderDetail(workOrder);
@@ -136,4 +130,17 @@ public class WorkOrderDetailFragment extends Fragment {
         });
     }
 
+    private void showErrorMessage() {
+        Log.d("ERROR_MESSAGE", "Showing error message");
+        viewDataBinding.tvErrorMessage.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(() -> {
+            viewDataBinding.tvErrorMessage.animate()
+                    .alpha(0f)
+                    .setDuration(800)
+                    .withEndAction(() -> viewDataBinding.tvErrorMessage.setVisibility(View.GONE));
+        }, 3000);
+
+        Log.d("ERROR_MESSAGE", "Error message: " + workOrderDetailViewModel.getErrorMessage().getValue());
+        Log.d("ERROR_MESSAGE", "Error message visibility: " + viewDataBinding.tvErrorMessage.getVisibility());
+    }
 }

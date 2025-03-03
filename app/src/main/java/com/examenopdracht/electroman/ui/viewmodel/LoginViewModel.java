@@ -10,17 +10,18 @@ import com.examenopdracht.electroman.data.entity.User;
 import com.examenopdracht.electroman.data.repository.UserRepository;
 
 public class LoginViewModel extends AndroidViewModel {
-
-    private MutableLiveData<User> loggedInUser = new MutableLiveData<>();
-    private MutableLiveData<String> userName = new MutableLiveData<>();
-    private MutableLiveData<String> password = new MutableLiveData<>();
-    private MutableLiveData<String> loginErrorMessage = new MutableLiveData<>();
-    private MutableLiveData<String> loginStatusMessage = new MutableLiveData<>();
-    private MutableLiveData<Boolean> navigateToCreateUserFragment = new MutableLiveData<>();
-    private MutableLiveData<Boolean> navigateToMainFragment = new MutableLiveData<>();
-
     private final UserRepository userRepository;
 
+    private MutableLiveData<User> loggedInUser = new MutableLiveData<>();
+
+    private MutableLiveData<String> userName = new MutableLiveData<>();
+    private MutableLiveData<String> password = new MutableLiveData<>();
+
+    private MutableLiveData<String> loginErrorMessage = new MutableLiveData<>();
+    private MutableLiveData<String> loginStatusMessage = new MutableLiveData<>();
+
+    private MutableLiveData<Boolean> navigateToCreateUserFragment = new MutableLiveData<>();
+    private MutableLiveData<Boolean> navigateToMainFragment = new MutableLiveData<>();
 
     public LoginViewModel(Application application) {
         super(application);
@@ -30,9 +31,11 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<User> getLoggedInUser() {
         return loggedInUser;
     }
+
     public MutableLiveData<String> getUserName() {
         return userName;
     }
+
     public void setUserName(MutableLiveData<String> userName) {
         this.userName = userName;
     }
@@ -40,6 +43,7 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<String> getPassword() {
         return password;
     }
+
     public void setPassword(MutableLiveData<String> password) {
         this.password = password;
     }
@@ -47,6 +51,7 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<String> getLoginErrorMessage() {
         return loginErrorMessage;
     }
+
     public void setLoginErrorMessage(MutableLiveData<String> loginErrorMessage) {
         this.loginErrorMessage = loginErrorMessage;
     }
@@ -54,6 +59,7 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<String> getLoginStatusMessage() {
         return loginStatusMessage;
     }
+
     public void setLoginStatusMessage(MutableLiveData<String> loginStatusMessage) {
         this.loginStatusMessage = loginStatusMessage;
     }
@@ -61,6 +67,7 @@ public class LoginViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> getNavigateToCreateUserFragment() {
         return navigateToCreateUserFragment;
     }
+
     public MutableLiveData<Boolean> getNavigateToMainFragment() {
         return navigateToMainFragment;
     }
@@ -94,9 +101,8 @@ public class LoginViewModel extends AndroidViewModel {
             }
         });
     }
+
     public void navigateToCreateUserFragment() {
         navigateToCreateUserFragment.setValue(true);
     }
-
-
 }

@@ -14,23 +14,26 @@ public class SharedViewModel extends ViewModel {
     private final MutableLiveData<WorkOrder> selectedWorkOrder = new MutableLiveData<>();
     private final MutableLiveData<List<WorkOrder>> allWorkOrders = new MutableLiveData<>();
 
+    public LiveData<User> getCurrentUser() {
+        return currentUser;
+    }
+
     public void setCurrentUser(User user) {
         currentUser.setValue(user);
     }
-    public LiveData<User> getCurrentUser() {
-        return currentUser;
+
+    public LiveData<WorkOrder> getSelectedWorkOrder() {
+        return selectedWorkOrder;
     }
 
     public void setSelectedWorkOrder(WorkOrder workOrder) {
         selectedWorkOrder.setValue(workOrder);
     }
-    public LiveData<WorkOrder> getSelectedWorkOrder() {
-        return selectedWorkOrder;
-    }
 
     public MutableLiveData<List<WorkOrder>> getAllWorkOrders() {
         return allWorkOrders;
     }
+
     public void setAllWorkOrders(List<WorkOrder> workOrders) {
         allWorkOrders.setValue(workOrders);
     }

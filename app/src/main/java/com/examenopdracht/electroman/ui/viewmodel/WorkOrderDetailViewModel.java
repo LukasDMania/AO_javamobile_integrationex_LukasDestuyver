@@ -6,7 +6,6 @@ import android.util.Log;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.examenopdracht.electroman.data.entity.WorkOrder;
 import com.examenopdracht.electroman.data.repository.WorkOrderRepository;
@@ -14,10 +13,12 @@ import com.examenopdracht.electroman.data.repository.WorkOrderRepository;
 import java.util.Objects;
 
 public class WorkOrderDetailViewModel extends AndroidViewModel {
-    private WorkOrderRepository workOrderRepository;
-    private MutableLiveData<WorkOrder> workOrderDetail = new MutableLiveData<>();
+    private final WorkOrderRepository workOrderRepository;
 
     private String initialRepairInfo;
+
+    private MutableLiveData<WorkOrder> workOrderDetail = new MutableLiveData<>();
+
     private MutableLiveData<String> errorMessage = new MutableLiveData<>();
 
     public WorkOrderDetailViewModel(Application application) {
@@ -28,6 +29,7 @@ public class WorkOrderDetailViewModel extends AndroidViewModel {
     public MutableLiveData<WorkOrder> getWorkOrderDetail() {
         return workOrderDetail;
     }
+
     public void setWorkOrderDetail(WorkOrder workOrder) {
         workOrderDetail.setValue(workOrder);
         initialRepairInfo = workOrder.getRepairInformation();
@@ -36,12 +38,16 @@ public class WorkOrderDetailViewModel extends AndroidViewModel {
     public LiveData<String> getErrorMessage() {
         return errorMessage;
     }
+
     public void setErrorMessage(String message) {
         errorMessage.setValue(message);
     }
 
+    // Business Logic Methods
     public void updateWorkOrder() {
-        if (workOrderDetail.getValue() != null) { workOrderDetail.getValue().setProcessed(true); }
+        if (workOrderDetail.getValue() != null) {
+            workOrderDetail.getValue().setProcessed(true);
+        }
 
         workOrderRepository.updateWorkOrder(workOrderDetail.getValue());
     }

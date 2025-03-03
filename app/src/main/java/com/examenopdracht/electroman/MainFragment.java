@@ -1,10 +1,17 @@
 package com.examenopdracht.electroman;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -15,29 +22,18 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.examenopdracht.electroman.data.entity.WorkOrder;
 import com.examenopdracht.electroman.databinding.FragmentMainBinding;
 import com.examenopdracht.electroman.ui.viewmodel.MainFragmentViewModel;
 import com.examenopdracht.electroman.ui.viewmodel.SharedViewModel;
-import com.examenopdracht.electroman.util.MockData;
-
-import java.util.List;
 
 public class MainFragment extends Fragment {
     private MainFragmentViewModel mainFragmentViewModel;
     private SharedViewModel sharedViewModel;
-    private WorkOrderAdapter workOrderAdapter;
-    private RecyclerView workOrderRecyclerView;
-    private FragmentMainBinding viewDataBinding;
 
+    private FragmentMainBinding viewDataBinding;
+    private RecyclerView workOrderRecyclerView;
+    private WorkOrderAdapter workOrderAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,25 +54,33 @@ public class MainFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewDataBinding.setMainFragmentViewModel(mainFragmentViewModel);
-        viewDataBinding.setLifecycleOwner(this);
 
+        initializeDataBinding();
         initializeViews(view);
-        ((AppCompatActivity) requireActivity()).setSupportActionBar(viewDataBinding.toolbar);
-        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Overview");
-
+        setupToolbar();
         setupMenu();
         setupObservers();
         setupRecyclerView();
+    }
+
+    private void initializeDataBinding() {
+        viewDataBinding.setMainFragmentViewModel(mainFragmentViewModel);
+        viewDataBinding.setLifecycleOwner(this);
     }
 
     private void initializeViews(View view) {
         workOrderRecyclerView = view.findViewById(R.id.workOrdersRecyclerView);
         Log.d("MainFragment", "RecyclerView reference: " + (workOrderRecyclerView != null ? "found" : "null"));
     }
-    private void setupMenu(){
+
+    private void setupToolbar() {
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(viewDataBinding.toolbar);
+        ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Overview");
+    }
+
+    private void setupMenu() {
         Log.d("MainFragment", "Setting up menu");
         MenuProvider menuProvider = new MenuProvider() {
             @Override
@@ -100,36 +104,7 @@ public class MainFragment extends Fragment {
         requireActivity().addMenuProvider(menuProvider, getViewLifecycleOwner());
     }
 
-    private void setupRecyclerView() {
-        workOrderAdapter = new WorkOrderAdapter(requireContext());
-        workOrderAdapter.setWorkOrders(mainFragmentViewModel.getWorkOrders().getValue());
-
-        // Click listener for when you click on a row
-        workOrderAdapter.setOnWorkOrderClickListener(workOrder -> {
-            Log.d("MainFragment", "WorkOrder clicked: " + workOrder.getCustomerName());
-            mainFragmentViewModel.getNavigateToWorkOrderDetail().setValue(true);
-            sharedViewModel.setSelectedWorkOrder(workOrder);
-        });
-
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
-        workOrderRecyclerView.setLayoutManager(layoutManager);
-        workOrderRecyclerView.setAdapter(workOrderAdapter);
-
-        // Add devider line between rows
-        workOrderRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), layoutManager.getOrientation()));
-
-
-        RecyclerView.Adapter adapter = workOrderRecyclerView.getAdapter();
-        if (adapter != null) {
-            Log.d("MainFragment", "Adapter is set: " + adapter.getClass().getSimpleName());
-        } else {
-            Log.d("MainFragment", "Adapter is null");
-        }
-
-    }
-
-    private void setupObservers(){
+    private void setupObservers() {
         sharedViewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
             if (user != null) {
                 mainFragmentViewModel.setCurrentUser(user);
@@ -137,22 +112,45 @@ public class MainFragment extends Fragment {
             }
         });
 
-
         mainFragmentViewModel.getWorkOrders().observe(getViewLifecycleOwner(), workOrders -> {
             Log.d("MainFragment", "Observed workOrders: " + (workOrders != null ? workOrders.size() : "null"));
             for (WorkOrder workOrder : workOrders) {
                 Log.d("MainFragment", "WorkOrder: " + workOrder.toString());
-            };
+            }
             workOrderAdapter.setWorkOrders(workOrders);
         });
 
         mainFragmentViewModel.getNavigateToWorkOrderDetail().observe(getViewLifecycleOwner(), navigate -> {
             if (navigate) {
-                //TODO: Navigate to work order detail fragment
                 NavController navController = NavHostFragment.findNavController(this);
                 navController.navigate(R.id.action_mainFragment_to_workOrderDetailFragment);
                 mainFragmentViewModel.getNavigateToWorkOrderDetail().setValue(false);
             }
         });
+    }
+
+    private void setupRecyclerView() {
+        workOrderAdapter = new WorkOrderAdapter(requireContext());
+        workOrderAdapter.setWorkOrders(mainFragmentViewModel.getWorkOrders().getValue());
+
+        workOrderAdapter.setOnWorkOrderClickListener(workOrder -> {
+            Log.d("MainFragment", "WorkOrder clicked: " + workOrder.getCustomerName());
+            mainFragmentViewModel.getNavigateToWorkOrderDetail().setValue(true);
+            sharedViewModel.setSelectedWorkOrder(workOrder);
+        });
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
+        workOrderRecyclerView.setLayoutManager(layoutManager);
+        workOrderRecyclerView.setAdapter(workOrderAdapter);
+
+        // Add dividr line between rows
+        workOrderRecyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), layoutManager.getOrientation()));
+
+        RecyclerView.Adapter adapter = workOrderRecyclerView.getAdapter();
+        if (adapter != null) {
+            Log.d("MainFragment", "Adapter is set: " + adapter.getClass().getSimpleName());
+        } else {
+            Log.d("MainFragment", "Adapter is null");
+        }
     }
 }

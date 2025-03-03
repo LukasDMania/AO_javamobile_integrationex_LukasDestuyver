@@ -1,16 +1,6 @@
 package com.examenopdracht.electroman;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuProvider;
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +8,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuProvider;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.examenopdracht.electroman.databinding.FragmentCreateWorkOrderBinding;
 import com.examenopdracht.electroman.ui.viewmodel.SharedViewModel;
@@ -28,9 +28,8 @@ import java.util.Objects;
 public class CreateWorkOrderFragment extends Fragment {
     private WorkOrderCreateViewModel workOrderCreateViewModel;
     private SharedViewModel sharedViewModel;
+
     private FragmentCreateWorkOrderBinding viewDataBinding;
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,28 +45,36 @@ public class CreateWorkOrderFragment extends Fragment {
                 R.layout.fragment_create_work_order,
                 container,
                 false);
+
         return viewDataBinding.getRoot();
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        initializeDataBinding();
+        setupToolbar();
+        setupMenu();
+        setupObservers();
+    }
+
+    private void initializeDataBinding() {
         viewDataBinding.setWorkOrderCreateViewModel(workOrderCreateViewModel);
         viewDataBinding.setLifecycleOwner(this);
+    }
 
-        setupObservers();
-
+    private void setupToolbar() {
         ((AppCompatActivity) requireActivity()).setSupportActionBar(viewDataBinding.toolbar);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity) requireActivity()).getSupportActionBar().setTitle("Work Order Create");
-        setupMenu();
     }
 
-    private void setupObservers(){
+    private void setupObservers() {
         // TODO: implement
     }
 
-    private void setupMenu(){
+    private void setupMenu() {
         MenuProvider menuProvider = new MenuProvider() {
             @Override
             public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
@@ -80,14 +87,26 @@ public class CreateWorkOrderFragment extends Fragment {
 
                 if (id == R.id.work_order_create_action_save) {
                     if (workOrderCreateViewModel.validInputWorkOrder()) {
-                        workOrderCreateViewModel.insertWorkOrder(Objects.requireNonNull(sharedViewModel.getCurrentUser().getValue()).getId());
-                        NavController navController = NavHostFragment.findNavController(CreateWorkOrderFragment.this);
-                        navController.navigate(R.id.action_createWorkOrderFragment_to_mainFragment);
-                        return true;
+                        workOrderCreateViewModel.doesWorkOrderAlreadyExistAndInsert(Objects.requireNonNull(sharedViewModel.getCurrentUser().getValue()).getId());
+
+                        workOrderCreateViewModel.getInsertSuccess().observe(getViewLifecycleOwner(), success -> {
+                            if (success) {
+                                // Check if we're already at the main fragment
+                                NavController navController = NavHostFragment.findNavController(CreateWorkOrderFragment.this);
+                                if (navController.getCurrentDestination().getId() != R.id.mainFragment) {
+                                    navController.navigate(R.id.action_createWorkOrderFragment_to_mainFragment);
+                                }
+                            } else {
+                                viewDataBinding.errorMessageTextView.setVisibility(View.VISIBLE);
+                            }
+                        });
+
                     } else {
                         Log.d("CreateWorkOrderFragment", "setupMenu: " + workOrderCreateViewModel.getErrorMessage().getValue());
                         viewDataBinding.errorMessageTextView.setVisibility(View.VISIBLE);
                     }
+                    return true;
+
                 } else if (id == R.id.work_order_create_action_cancel) {
                     getActivity().getOnBackPressedDispatcher().onBackPressed();
                     return true;

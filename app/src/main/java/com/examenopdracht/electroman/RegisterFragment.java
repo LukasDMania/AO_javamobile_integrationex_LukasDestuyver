@@ -2,6 +2,9 @@ package com.examenopdracht.electroman;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,10 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.examenopdracht.electroman.databinding.FragmentRegisterBinding;
 import com.examenopdracht.electroman.ui.viewmodel.RegisterViewModel;
@@ -24,7 +23,9 @@ import java.util.Locale;
 
 public class RegisterFragment extends Fragment {
     private RegisterViewModel registerViewModel;
+
     private FragmentRegisterBinding viewDataBinding;
+
     private final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
     @Override
@@ -47,9 +48,17 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        initializeDataBinding();
+        setupObservers();
+    }
+
+    private void initializeDataBinding() {
         viewDataBinding.setRegisterViewModel(registerViewModel);
         viewDataBinding.setLifecycleOwner(this);
+    }
 
+    private void setupObservers() {
         registerViewModel.getShowDatePicker().observe(getViewLifecycleOwner(), show -> {
             if (show) {
                 showDatePickerDialog();
@@ -78,5 +87,4 @@ public class RegisterFragment extends Fragment {
 
         datePickerDialog.show();
     }
-
 }

@@ -1,6 +1,9 @@
 package com.examenopdracht.electroman;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,14 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.examenopdracht.electroman.data.database.ElectromanDatabase;
-import com.examenopdracht.electroman.data.entity.User;
-import com.examenopdracht.electroman.data.entity.WorkOrder;
 import com.examenopdracht.electroman.data.repository.UserRepository;
 import com.examenopdracht.electroman.data.repository.WorkOrderRepository;
 import com.examenopdracht.electroman.databinding.FragmentLoginBinding;
@@ -25,13 +21,10 @@ import com.examenopdracht.electroman.ui.viewmodel.LoginViewModel;
 import com.examenopdracht.electroman.ui.viewmodel.SharedViewModel;
 import com.examenopdracht.electroman.util.MockData;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-
 public class LoginFragment extends Fragment {
     private LoginViewModel loginViewModel;
     private SharedViewModel sharedViewModel;
+
     private FragmentLoginBinding viewDataBinding;
 
     private MockData mockData;
@@ -53,7 +46,6 @@ public class LoginFragment extends Fragment {
         ElectromanDatabase.dbWriteExecutor.execute(() -> {
             mockData.insertMockUsers(10);
         });
-
     }
 
     @Override
@@ -69,9 +61,18 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        initializeDataBinding();
+        setupObservers();
+    }
+
+    private void initializeDataBinding() {
         viewDataBinding.setLoginViewModel(loginViewModel);
         viewDataBinding.setLifecycleOwner(this);
+    }
 
+    private void setupObservers() {
         loginViewModel.getNavigateToMainFragment().observe(getViewLifecycleOwner(), navigate -> {
             if (navigate) {
                 NavController navController = NavHostFragment.findNavController(this);

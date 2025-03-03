@@ -3,6 +3,7 @@ package com.examenopdracht.electroman.data.repository;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.examenopdracht.electroman.data.dao.WorkOrderDao;
 import com.examenopdracht.electroman.data.database.ElectromanDatabase;
@@ -57,7 +58,18 @@ public class WorkOrderRepository {
         ElectromanDatabase.dbWriteExecutor.execute(workOrderDao::deleteAll);
     }
 
-    public LiveData<Integer> doesWorkOrderExist(String city, String device, String problemCode) {
-        return workOrderDao.doesWorkOrderExist(city, device, problemCode);
+    public LiveData<Boolean> doesWorkOrderExist(String city, String device, String customerName) {
+        MutableLiveData<Boolean> result = new MutableLiveData<>();
+
+        ElectromanDatabase.dbWriteExecutor.execute(() -> {
+            try {
+                int workOrderCount = workOrderDao.doesWorkOrderExist(city, device, customerName);
+                result.postValue(workOrderCount > 0);
+            } catch (Exception e) {
+                result.postValue(false);
+            }
+        });
+
+        return result;
     }
 }
