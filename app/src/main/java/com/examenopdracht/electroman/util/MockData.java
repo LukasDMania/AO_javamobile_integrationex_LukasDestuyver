@@ -24,8 +24,8 @@ public class MockData {
     }
     private void insertMockWorkOrdersForAdmin() {
         User admin = userRepository.getUserByUserName("admin");
-        Log.d("MOCKADATe" , admin.toString());
         if (admin == null) { return; };
+        Log.d("MOCKADATe" , admin.toString());
 
         for (int i = 1; i <= 10; i++) {
             Log.d("MOCKADATe" , "insertMockWorkOrdersForAdmin: " + i);

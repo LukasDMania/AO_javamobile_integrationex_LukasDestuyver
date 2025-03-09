@@ -91,6 +91,10 @@ public class RegisterViewModel extends AndroidViewModel {
         }
     }
 
+    public void OnCancelPressed(){
+        navigateBack.setValue(true);
+    }
+
     private boolean validateInput() {
         if (isEmpty(firstName.getValue())) {
             errorMessage.setValue("First name is required");
